@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+dist-electron/
+out/
+release/
+build/
+*.tsbuildinfo
+
+# Packaged installers
+*.exe
+*.dmg
+*.AppImage
+*.deb
+*.rpm
+*.msi
+*.blockmap
+
+# Env and secrets
+.env
+.env.*
+!.env.example
+*.local
+
+# Vite / caches
+.vite/
+.cache/
+.eslintcache
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Test coverage
+coverage/
+
+# Editors / OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,82 @@
+@import './base.css';
+
+.hide {
+  visibility: hidden;
+}
+#root {
+  display: flex;
+  user-select: none;
+}
+body {
+  background-color: #1b1b1f
+}
+.fl-folder > .fl-folder-content {
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  width: fit-content;
+}
+.fl-folder img {
+  width: 1em;
+}
+.fl-folder button {
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+.arrow-open {
+  rotate: 90deg;
+}
+.fl-folder > img {
+  margin-right: 10px;
+}
+.fl-folder > .folder-list {
+  padding-left: 20px;
+}
+.folder-list {
+  display: block;
+  padding: 0;
+  overflow: hidden;
+  width: 100%;
+  background-color: #54545e;
+}
+#root > .folder-list {
+  height: 100vh;
+}
+.fl-folder-content p {
+  color: white;
+}
+.tab-list {
+  padding: 0;
+  margin-left: 50px;
+}
+.file-list {
+  padding: 0;
+}
+.file-list button {
+  display: flex;
+  align-items: center;
+  background: none;
+  border: none;
+  font-size: 30px;
+  cursor: pointer;
+  border-radius: 5px;
+  width: 500px;
+}
+.file-list button:hover {
+  background-color: #2c2c33;
+}
+.file img {
+  height: 1em;
+}
+.file p {
+  color: white;
+}
+.resize-handle {
+  width: 4px;
+  cursor: col-resize;
+  background: transparent;
+}
+.resize-handle:hover {
+  background: #FFFFFF
+}
