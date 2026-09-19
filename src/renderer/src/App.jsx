@@ -117,8 +117,8 @@ function App() {
 
   return (
     <SettingsContext.Provider value={settings}>
-      <div style={{width: sidebarWidth, flexShrink: 0}}>
-        <FolderList files={entries} curPath={curPath}/>
+      <div className="sidebar" style={{width: sidebarWidth, flexShrink: 0}}>
+        <RootFolderList files={entries} curPath={curPath}/>
       </div>
       <div className="resize-handle" onMouseDown={(e) => startResize(e, sidebarWidth, setSidebarWidth)}></div>
       <ul className="tab-list">
@@ -164,8 +164,16 @@ function File({file, tabId}) {
     </div>
   )
 }
+function RootFolderList({files, curPath}) {
+  files = files.filter(files => (files.isDirectory))
+
+  return (
+    <ul className="folder-list">
+      <FLFolder folderName={{name: "/", isDirectory: true}} curPath="/"/>
+    </ul>
+  )
+}
 function FolderList({files, curPath}) {
-  console.log(files)
   files = files.filter(file => (file.isDirectory))
   const flFolders = files.map(file => (
     <FLFolder key={file.name} folderName={file} curPath={curPath}/>

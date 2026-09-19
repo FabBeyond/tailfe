@@ -44,12 +44,21 @@ app.whenReady().then(() => {
     try {
       const entries = await fs.readdir(dirPath, { withFileTypes: true })
       const detailed = await Promise.all(entries.map(async (e) => {
-        const stats = await fs.stat(join(dirPath, e.name))
-        return {
-          name: e.name,
-          isDirectory: e.isDirectory(),
-          size: stats.size,
-          lastModified: stats.mtime
+        try {
+          const stats = await fs.stat(join(dirPath, e.name))
+          return {
+            name: e.name,
+            isDirectory: e.isDirectory(),
+            size: stats.size,
+            lastModified: stats.mtime
+          }
+        } catch {
+          return {
+            name: e.name,
+            isDirectory: e.isDirectory(),
+            size: null,
+            lastModified: null
+          }
         }
       }))
       return detailed

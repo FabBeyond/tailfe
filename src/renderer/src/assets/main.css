@@ -39,6 +39,7 @@ body {
   overflow: hidden;
   width: 100%;
   background-color: #54545e;
+  height: 100vh;
 }
 #root > .folder-list {
   height: 100vh;
