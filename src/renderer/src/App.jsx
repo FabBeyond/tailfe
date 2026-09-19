@@ -39,12 +39,13 @@ function useSettings() {
   const [activeTab, setActiveTab] = useState(0)
   const [insertMode, setInsertMode] = useState(false)
   const [kbdSearchLet, setKdbSearchLet] = useState("")
+  const [mainZoom, setMainZoom] = useState(30)
 
-  return {showDotFiles, setShowDotFiles, tabPaths, setTabPaths, insertMode, setInsertMode, kbdSearchLet, setKdbSearchLet, activeTab, setActiveTab}
+  return {showDotFiles, setShowDotFiles, tabPaths, setTabPaths, insertMode, setInsertMode, kbdSearchLet, setKdbSearchLet, activeTab, setActiveTab, mainZoom, setMainZoom}
 }
 
 function handleKeyDown(e, settings) {
-  const {insertMode, setInsertMode, kbdSearchLet, setKdbSearchLet, activeTab, tabPaths, setTabPaths} = settings
+  const {insertMode, setInsertMode, kbdSearchLet, setKdbSearchLet, activeTab, tabPaths, setTabPaths, mainZoom, setMainZoom} = settings
 
   if (e.key === "i" && !insertMode) {
     e.preventDefault()
@@ -74,6 +75,18 @@ function handleKeyDown(e, settings) {
       }
       return prev + e.key
     })
+  }
+  else {
+    if (e.key === ",") {
+      setMainZoom(prev => {
+        return prev-2
+      })
+    }
+    else if (e.key === ".") {
+      setMainZoom(prev => {
+        return prev+2
+      })
+    }
   }
 }
 function startResize(e, sidebarWidth, setSidebarWidth) {
@@ -145,13 +158,13 @@ function Tab({path, tabId}) {
 }
 function File({file, tabId}) {
   const {showDotFiles} = useContext(SettingsContext)
-  const {tabPaths, setTabPaths} = useContext(SettingsContext)
+  const {tabPaths, setTabPaths, mainZoom} = useContext(SettingsContext)
 
   if (!showDotFiles && file.name.startsWith(".")) return
 
   return (
     <div className="file">
-      <button onClick={() => {
+      <button style={{fontSize: mainZoom}} onClick={() => {
         changeTabPath(setTabPaths, tabId, concatPath(tabPaths[tabId], file.name))
       }}>
         {file.isDirectory ? (
