@@ -4,8 +4,10 @@
   visibility: hidden;
 }
 #root {
-  display: flex;
   user-select: none;
+}
+.bottom-part {
+  display: flex;
 }
 body {
   background-color: #1b1b1f

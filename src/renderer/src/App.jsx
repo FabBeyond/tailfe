@@ -28,10 +28,7 @@ function readDirSafe(path, onSuccess) {
   })
 }
 function isValidPath(path) {
-  window.api.readDir(path).then(result => {
-    if (result.error) return false
-    else return true
-  })
+  return window.api.readDir(path).then(result => !result.error)
 }
 function useSettings() {
   const [showDotFiles, setShowDotFiles] = useState(false)
@@ -45,8 +42,10 @@ function useSettings() {
 }
 
 function handleKeyDown(e, settings) {
+  if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return
   const {insertMode, setInsertMode, kbdSearchLet, setKdbSearchLet, activeTab, tabPaths, setTabPaths, mainZoom, setMainZoom} = settings
 
+  // make Shift+i super insert mode where you type the full path
   if (e.key === "i" && !insertMode) {
     e.preventDefault()
     setInsertMode(true)
@@ -130,14 +129,47 @@ function App() {
 
   return (
     <SettingsContext.Provider value={settings}>
-      <div className="sidebar" style={{width: sidebarWidth, flexShrink: 0}}>
-        <RootFolderList files={entries} curPath={curPath}/>
+      <TopBar/>
+      <div className="bottom-part">
+        <div className="sidebar" style={{width: sidebarWidth, flexShrink: 0}}>
+          <RootFolderList files={entries} curPath={curPath}/>
+        </div>
+        <div className="resize-handle" onMouseDown={(e) => startResize(e, sidebarWidth, setSidebarWidth)}></div>
+        <ul className="tab-list">
+          {tabs}
+        </ul>
       </div>
-      <div className="resize-handle" onMouseDown={(e) => startResize(e, sidebarWidth, setSidebarWidth)}></div>
-      <ul className="tab-list">
-        {tabs}
-      </ul>
     </SettingsContext.Provider>
+  )
+}
+function TopBar() {
+  const {tabPaths, setTabPaths, activeTab} = useContext(SettingsContext)
+  const [tempPath, setTempPath] = useState(tabPaths[activeTab])
+
+  useEffect(() => {
+    setTempPath(tabPaths[activeTab])
+  }, [tabPaths])
+
+  return (
+    <input type="text" value={tempPath} onChange={(e) => {
+      setTempPath(e.target.value)
+      console.log(e.target.value)
+    }} onKeyUp={(e) => {
+      if (e.key === "Enter") {
+          console.log(e.target.value)
+        isValidPath(e.target.value).then(valid => {
+          if (!valid) {
+              console.log("invalid")
+            e.target.value = tabPaths[activeTab]
+            e.target.blur()
+          }
+          else {
+            changeTabPath(setTabPaths, activeTab, e.target.value)
+            e.target.blur()
+          }
+        })
+      }
+    }}/>
   )
 }
 function Tab({path, tabId}) {
